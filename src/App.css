@@ -1,7 +1,19 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 .app {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    padding: 20px 0 0 20px;
+    font-size: 16px;
+    padding: 0 5px 60px 5px;
+
+}
+
+@media screen and (min-width: 500px)  {
+    .app {
+        font-size: 18px;
+        padding: 20px 0 60px 20px;
+    }
 }
 
 .ul {
@@ -27,6 +39,8 @@
 
 .table {
     border-spacing: 0;
+    width: 100%;
+    max-width: 600px;
 }
 
 .tr--red {
@@ -38,7 +52,15 @@
 }
 
 .th, .td {
-    padding: 10px 40px 10px 0;
+    padding: 10px 10px 10px 0;
     text-align: left;
 }
 
+.td {
+    width: 15%;
+}
+
+.td:first-of-type {
+    padding-right: 5px;
+    width: 70%;
+}
