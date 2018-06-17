@@ -4,6 +4,7 @@ import { decode } from 'he';
 import { getLeague, getMatch } from './api';
 
 import Results from './Results';
+import Spinner from './Spinner';
 
 import './App.css';
 
@@ -94,9 +95,9 @@ class App extends Component {
             )
         }
 
-        if (!list.length) {
+        if (!list.length || list.length) {
             return (
-                <p>Pausemusikk</p>
+                <Spinner />
             );
         }
 
