@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { decode } from 'he';
 
-import { getLeague } from './api';
+import { getLeague, getMatch } from './api';
 
 import './App.css';
 class App extends Component {
@@ -12,29 +12,38 @@ class App extends Component {
         this.state = {
             id_selected: null,
             list: [],
+            matches: [],
         }
     }
 
     async componentDidMount() {
         const league = await getLeague();
 
+        const list = league.liste.map(p => ({
+            ...p,
+            tipping: JSON.parse(p.tipping)
+        }));
+
+        const match_ids = new Set(
+            JSON.parse(league.liste[0].tipping).map(match => match.id)
+        );
+
+        const matches = await Promise.all([...match_ids].map(
+            async (id) => getMatch(id)
+        ))
+
         this.setState({
-            list: league.liste.map(p => ({
-                ...p,
-                tipping: JSON.parse(p.tipping)
-            })),
+            list,
+            matches,
         });
     }
 
     render() {
         const {
-            list,
             id_selected,
+            list,
+            matches,
         } = this.state;
-
-        if (list.length) {
-            console.log(list[0].tipping)
-        }
 
         return (
             <div className="app">
@@ -70,6 +79,9 @@ class App extends Component {
                                         Kamp
                                     </th>
                                     <th className="th">
+                                        Tippet
+                                    </th>
+                                    <th className="th">
                                         Resultat
                                     </th>
                                 </tr>
@@ -78,21 +90,33 @@ class App extends Component {
                                 {list
                                     .find(p => p.id_public === id_selected)
                                     .tipping
-                                    .map(match => (
-                                        <tr
-                                            key={match.id}
-                                            className="tr"
-                                        >
-                                            <td className="td">
-                                                {match.id}
-                                            </td>
-                                            {match.spilt &&
+                                    .map(match => {
+                                        const matchData = matches.find(m => m.id === match.id);
+                                        return (
+                                            <tr
+                                                key={match.id}
+                                                className="tr"
+                                            >
                                                 <td className="td">
-                                                    {match.h} - {match.b}
+                                                    {matchData.eventName}
                                                 </td>
-                                            }
-                                        </tr>
-                                    ))
+                                                <td className="td">
+                                                    {match.spilt &&
+                                                        <span>
+                                                            {match.h} - {match.b}
+                                                        </span>
+                                                    }
+                                                </td>
+                                                <td className="td">
+                                                    {matchData.eventStatus === 'finished' &&
+                                                        <span>
+                                                            {matchData.match.competitor1.score} - {matchData.match.competitor2.score}
+                                                        </span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
                                 }
                             </tbody>
                         </table>
