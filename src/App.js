@@ -38,16 +38,41 @@ class App extends Component {
             ))
 
             this.setState({
-                list,
+                list: list.map(l => ({
+                    ...l,
+                    tipping: l.tipping.map(tipping => {
+                        const match = matches.find(m => m.id === tipping.id);
+                        const guess = `${tipping.h} - ${tipping.b}`;
+                        const finished = match.eventStatus === 'finished';
+                        const { competitor1, competitor2 } = match.match; // derp
+                        const result = finished ?  `${competitor1.score} - ${competitor2.score}` : '';
+                        return {
+                            ...tipping,
+                            guess,
+                            finished,
+                            result,
+                            correct: finished && guess === result,
+                            wrong: finished && guess !== result,
+                        };
+                    }),
+                })).map(l => ({
+                    ...l,
+                    score: l.tipping.filter(t => t.correct).length,
+                })).sort(
+                    (a, b) => (a.score === b.score) ? 0 :
+                        (a.score < b.score) ? 1 : -1
+                ),
                 matches,
             });
         } catch (e) {
+            console.error(e);
             this.setState({ hasError: true });
         }
 
     }
 
-    componentDidCatch() {
+    componentDidCatch(e) {
+        console.error(e);
         this.setState({ hasError: true });
     }
 
@@ -63,6 +88,12 @@ class App extends Component {
             return (
                 <p>Noe gikk til hælvette, prøv en annen browser eller noe</p>
             )
+        }
+
+        if (!list.length) {
+            return (
+                <p>Pausemusikk</p>
+            );
         }
 
         return (
@@ -84,6 +115,7 @@ class App extends Component {
                             >
                                 {decode(p.navn)}
                             </button>
+                            ({p.score})
                         </li>
                     ))}
                 </ul>

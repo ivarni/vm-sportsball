@@ -5,26 +5,19 @@ const Match = ({ data }) => {
     const {
         eventName,
         spilt,
-        h,
-        b,
-        eventStatus,
-        match: {
-            competitor1,
-            competitor2,
-        },
+        finished,
+        guess,
+        result,
+        correct,
+        wrong,
     } = data;
-
-    const finished = eventStatus === 'finished';
-
-    const guess = `${h} - ${b}`;
-    const result = finished ? `${competitor1.score} - ${competitor2.score}` : '';
 
     return (
         <tr
             className={classNames(
                 'tr',
-                { 'tr--red': finished && guess !== result},
-                { 'tr--green': finished && guess === result}
+                { 'tr--red': wrong},
+                { 'tr--green': correct}
             )}
         >
             <td className="td">
