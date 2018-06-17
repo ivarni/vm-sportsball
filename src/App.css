@@ -25,11 +25,20 @@
     text-decoration: underline;
 }
 
-.tr {
+.table {
+    border-spacing: 0;
+}
+
+.tr--red {
+    background-color: #f3cfcf;
+}
+
+.tr--green {
+    background-color: #dbf3cf;
 }
 
 .th, .td {
-    padding: 10px 40px 0 0;
+    padding: 10px 40px 10px 0;
     text-align: left;
 }
 

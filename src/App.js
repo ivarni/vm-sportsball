@@ -1,9 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { decode } from 'he';
 
 import { getLeague, getMatch } from './api';
 
+import Results from './Results';
+
 import './App.css';
+
 class App extends Component {
 
     constructor() {
@@ -68,59 +71,10 @@ class App extends Component {
                     ))}
                 </ul>
                 {id_selected &&
-                    <Fragment>
-                        <h2>
-                            {list.find(p => p.id_public === id_selected).navn}
-                        </h2>
-                        <table>
-                            <thead>
-                                <tr className="tr">
-                                    <th className="th">
-                                        Kamp
-                                    </th>
-                                    <th className="th">
-                                        Tippet
-                                    </th>
-                                    <th className="th">
-                                        Resultat
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {list
-                                    .find(p => p.id_public === id_selected)
-                                    .tipping
-                                    .map(match => {
-                                        const matchData = matches.find(m => m.id === match.id);
-                                        return (
-                                            <tr
-                                                key={match.id}
-                                                className="tr"
-                                            >
-                                                <td className="td">
-                                                    {matchData.eventName}
-                                                </td>
-                                                <td className="td">
-                                                    {match.spilt &&
-                                                        <span>
-                                                            {match.h} - {match.b}
-                                                        </span>
-                                                    }
-                                                </td>
-                                                <td className="td">
-                                                    {matchData.eventStatus === 'finished' &&
-                                                        <span>
-                                                            {matchData.match.competitor1.score} - {matchData.match.competitor2.score}
-                                                        </span>
-                                                    }
-                                                </td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </table>
-                    </Fragment>
+                    <Results
+                        tipping={list.find(p => p.id_public === id_selected)}
+                        matches={matches}
+                    />
                 }
             </div>
         );
