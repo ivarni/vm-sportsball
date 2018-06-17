@@ -63,10 +63,14 @@ class App extends Component {
                 })).map(l => ({
                     ...l,
                     score:  l.tipping.filter(t => t.correctOutcome).map(t => t.correct ? 2 : 1).reduce((a,s) => a+s),
+                    correct: l.tipping.filter(t => t.correct).length
                 })).sort(
                     (a, b) => (a.score === b.score) ? 0 :
                         (a.score < b.score) ? 1 : -1
-                ),
+                ).map((p, idx, all) => ({
+                    ...p,
+                    placement: this.findPlacement(all, idx)
+                })),
                 matches,
             });
         } catch (e) {
@@ -74,6 +78,14 @@ class App extends Component {
             this.setState({ hasError: true });
         }
 
+    }
+
+    findPlacement(all, idx) {
+        if(idx === 0) {
+            return 1
+        } 
+
+        return all[idx - 1].score === all[idx].score ? this.findPlacement(all, idx -1) : idx + 1
     }
 
     componentDidCatch(e) {
@@ -106,12 +118,19 @@ class App extends Component {
                 <h1>
                     Scelto VM-liga
                 </h1>
-                <ul className="ul">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Navn</td>
+                            <td>Poeng</td>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {list.map(p => (
-                        <li
-                            key={p.id_public}
-                            className="li"
-                        >
+                        <tr key={p.id_public} className="li">
+                            <td>{p.placement}.</td>
+                            <td>
                             <button
                                 className="button"
                                 onClick={() => this.setState({
@@ -120,10 +139,12 @@ class App extends Component {
                             >
                                 {decode(p.navn)}
                             </button>
-                            ({p.score})
-                        </li>
+                            </td>
+                            <td>{p.score} ({p.correct})</td>
+                        </tr>
                     ))}
-                </ul>
+                    </tbody>
+                </table>
                 {id_selected &&
                     <Results
                         tipping={list.find(p => p.id_public === id_selected)}
