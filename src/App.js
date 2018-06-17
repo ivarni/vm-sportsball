@@ -13,6 +13,7 @@ class App extends Component {
         super();
 
         this.state = {
+            hasError: false,
             id_selected: null,
             list: [],
             matches: [],
@@ -20,33 +21,49 @@ class App extends Component {
     }
 
     async componentDidMount() {
-        const league = await getLeague();
+        try {
+            const league = await getLeague();
 
-        const list = league.liste.map(p => ({
-            ...p,
-            tipping: JSON.parse(p.tipping)
-        }));
+            const list = league.liste.map(p => ({
+                ...p,
+                tipping: JSON.parse(p.tipping)
+            }));
 
-        const match_ids = new Set(
-            JSON.parse(league.liste[0].tipping).map(match => match.id)
-        );
+            const match_ids = new Set(
+                JSON.parse(league.liste[0].tipping).map(match => match.id)
+            );
 
-        const matches = await Promise.all([...match_ids].map(
-            async (id) => getMatch(id)
-        ))
+            const matches = await Promise.all([...match_ids].map(
+                async (id) => getMatch(id)
+            ))
 
-        this.setState({
-            list,
-            matches,
-        });
+            this.setState({
+                list,
+                matches,
+            });
+        } catch (e) {
+            this.setState({ hasError: true });
+        }
+
+    }
+
+    componentDidCatch() {
+        this.setState({ hasError: true });
     }
 
     render() {
         const {
+            hasError,
             id_selected,
             list,
             matches,
         } = this.state;
+
+        if (hasError) {
+            return (
+                <p>Noe gikk til hælvette, prøv en annen browser eller noe</p>
+            )
+        }
 
         return (
             <div className="app">
