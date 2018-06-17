@@ -17,10 +17,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "precommit": "npm run build && git add build"
   },
   "devDependencies": {
     "gh-pages": "^1.2.0",
+    "husky": "^0.14.3",
     "nodemon": "^1.17.5"
   }
 }
