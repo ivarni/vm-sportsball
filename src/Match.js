@@ -9,6 +9,7 @@ const Match = ({ data }) => {
         guess,
         result,
         correct,
+        correctOutcome,
         wrong,
     } = data;
 
@@ -17,7 +18,8 @@ const Match = ({ data }) => {
             className={classNames(
                 'tr',
                 { 'tr--red': wrong},
-                { 'tr--green': correct}
+                { 'tr--green': correct},
+                { 'tr--lightgreen': correctOutcome && !correct}
             )}
         >
             <td className="td">

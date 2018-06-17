@@ -48,6 +48,10 @@
 }
 
 .tr--green {
+    background-color: #99ff66;
+}
+
+.tr--lightgreen {
     background-color: #dbf3cf;
 }
 

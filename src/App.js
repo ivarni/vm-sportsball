@@ -45,6 +45,9 @@ class App extends Component {
                         const guess = `${tipping.h} - ${tipping.b}`;
                         const finished = match.eventStatus === 'finished';
                         const { competitor1, competitor2 } = match.match; // derp
+                        const guessOutcome = tipping.h === tipping.b ? 'U' : tipping.h > tipping.b ? 'H' : 'B'
+                        const actualOutcome = competitor1.score === competitor2.score ? 'U' : competitor1.score > competitor2.score ? 'H' : 'B'
+
                         const result = finished ?  `${competitor1.score} - ${competitor2.score}` : '';
                         return {
                             ...tipping,
@@ -52,12 +55,13 @@ class App extends Component {
                             finished,
                             result,
                             correct: finished && guess === result,
-                            wrong: finished && guess !== result,
+                            correctOutcome: finished && guessOutcome === actualOutcome,
+                            wrong: finished && guess !== result && guessOutcome !== actualOutcome,
                         };
                     }),
                 })).map(l => ({
                     ...l,
-                    score: l.tipping.filter(t => t.correct).length,
+                    score:  l.tipping.filter(t => t.correctOutcome).map(t => t.correct ? 2 : 1).reduce((a,s) => a+s),
                 })).sort(
                     (a, b) => (a.score === b.score) ? 0 :
                         (a.score < b.score) ? 1 : -1
