@@ -95,7 +95,7 @@ class App extends Component {
             )
         }
 
-        if (!list.length || list.length) {
+        if (!list.length) {
             return (
                 <Spinner />
             );
