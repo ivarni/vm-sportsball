@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { decode } from 'he';
 
 import Match from './Match';
 
@@ -6,7 +7,7 @@ const Results = ({ tipping, matches }) => {
     return (
         <Fragment>
             <h2>
-                {tipping.navn}
+                {decode(tipping.navn)}
             </h2>
             <table className="table">
                 <thead>
