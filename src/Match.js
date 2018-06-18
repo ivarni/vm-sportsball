@@ -6,6 +6,7 @@ const Match = ({ data }) => {
         eventName,
         spilt,
         finished,
+        inProgress,
         guess,
         result,
         correct,
@@ -34,7 +35,7 @@ const Match = ({ data }) => {
                 }
             </td>
             <td className="td">
-                {finished &&
+                {(finished || inProgress) &&
                     <span>
                         {result}
                     </span>

@@ -30,7 +30,6 @@ app.use('/api/match/:id', (req, res) => {
         .then(json => res.json(json));
 });
 
-
 app.use('/api/guess/:id', (req, res) => {
     fetch(GUESS_URL(req.params.id))
         .then(resp => resp.json())

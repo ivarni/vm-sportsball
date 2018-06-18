@@ -31,7 +31,7 @@ class App extends Component {
             ))
             
             const playerGuessesDecoded = playerGuesses.map(p => ({...p, tipping: JSON.parse(p.tipping)}))
-            const matches = await getAllMatches();
+            const matches = (await getAllMatches()).filter(m => m.eventStatus === "finished" || m.eventStatus === "inProgress")
 
             this.setState({
                 list: playerGuessesDecoded.map(l => ({
@@ -40,21 +40,25 @@ class App extends Component {
                         const match = matches.find(m => m.id === tipping.id);
                         const guess = `${tipping.h} - ${tipping.b}`;
                         const finished = match && match.eventStatus === 'finished';
+                        const startTime = match.start;
+                        const inProgress = match && match.eventStatus === 'inProgress';
                         const { competitor1, competitor2 } = match.match; // derp
                         const guessOutcome = tipping.h === tipping.b ? 'U' : tipping.h > tipping.b ? 'H' : 'B'
                         const actualOutcome = competitor1.score === competitor2.score ? 'U' : competitor1.score > competitor2.score ? 'H' : 'B'
 
-                        const result = finished ?  `${competitor1.score} - ${competitor2.score}` : '';
+                        const result = finished || inProgress ?  `${competitor1.score} - ${competitor2.score}` : '';
                         return {
                             ...tipping,
                             guess,
                             finished,
+                            inProgress,
                             result,
                             correct: finished && guess === result,
                             correctOutcome: finished && guessOutcome === actualOutcome,
                             wrong: finished && guess !== result && guessOutcome !== actualOutcome,
+                            startTime,
                         };
-                    }),
+                    }).sort((t1, t2) => {return t2.startTime.localeCompare(t1.startTime)})
                 })).map(l => ({
                     ...l,
                     score:  l.tipping.filter(t => t.correctOutcome).map(t => t.correct ? 2 : 1).reduce((a,s) => a+s),
@@ -66,7 +70,7 @@ class App extends Component {
                     ...p,
                     placement: this.findPlacement(all, idx)
                 })),
-                matches,
+                matches
             });
         } catch (e) {
             console.error(e);
