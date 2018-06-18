@@ -5,6 +5,8 @@ const express = require('express');
 
 const LEAGUE_URL = 'https://www.vg.no/spesial/2018/fotball-vm/api/hent_liga.php?liga=56e56251c0ff2001546b6fb768101933';
 const MATCH_URL = (id) => `https://redutv-api.vg.no/sports/fotball-vm-2018/kamp/${id}`;
+const GUESS = (id) => `https://www.vg.no/spesial/2018/fotball-vm/api/hent_tipping.php?id_public=${id}`;
+const ALL_MATCHES_URL = 'https://redutv-api.vg.no/sports/fotball-vm-2018/kampene'
 
 const app = express();
 
@@ -16,8 +18,21 @@ app.use('/api/league', (req, res) => {
         .then(json => res.json(json));
 });
 
+app.use('/api/allmatches', (req, res) => {
+    fetch(LEAGUE_URL)
+        .then(resp => resp.json())
+        .then(json => res.json(json));
+});
+
 app.use('/api/match/:id', (req, res) => {
-    fetch(MATCH_URL(req.params.id))
+    fetch(ALL_MATCHES_URL(req.params.id))
+        .then(resp => resp.json())
+        .then(json => res.json(json));
+});
+
+
+app.use('/api/guess/:id', (req, res) => {
+    fetch(GUESS_URL(req.params.id))
         .then(resp => resp.json())
         .then(json => res.json(json));
 });
