@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { decode } from 'he';
 
-import { getLeague, getMatch, getGuess } from './api';
+import { getLeague, getGuess, getAllMatches } from './api';
 
 import Results from './Results';
 import Spinner from './Spinner';
@@ -24,20 +24,14 @@ class App extends Component {
     async componentDidMount() {
         try {
             const league = await getLeague();
-
+            
             const player_ids = league.liste.map(p => p.id_public)
             const playerGuesses = await Promise.all([...player_ids].map(
                 async (id) => getGuess(id) 
             ))
             
             const playerGuessesDecoded = playerGuesses.map(p => ({...p, tipping: JSON.parse(p.tipping)}))
-            const match_ids = new Set(
-                JSON.parse(league.liste[0].tipping).map(match => match.id)
-            );
-
-            const matches = await Promise.all([...match_ids].map(
-                async (id) => getMatch(id)
-            ))
+            const matches = await getAllMatches();
 
             this.setState({
                 list: playerGuessesDecoded.map(l => ({
@@ -45,7 +39,7 @@ class App extends Component {
                     tipping: l.tipping.map(tipping => {
                         const match = matches.find(m => m.id === tipping.id);
                         const guess = `${tipping.h} - ${tipping.b}`;
-                        const finished = match.eventStatus === 'finished';
+                        const finished = match && match.eventStatus === 'finished';
                         const { competitor1, competitor2 } = match.match; // derp
                         const guessOutcome = tipping.h === tipping.b ? 'U' : tipping.h > tipping.b ? 'H' : 'B'
                         const actualOutcome = competitor1.score === competitor2.score ? 'U' : competitor1.score > competitor2.score ? 'H' : 'B'
