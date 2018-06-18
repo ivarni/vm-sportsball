@@ -25,7 +25,7 @@ app.use('/api/allmatches', (req, res) => {
 });
 
 app.use('/api/match/:id', (req, res) => {
-    fetch(ALL_MATCHES_URL(req.params.id))
+    fetch(MATCH_URL(req.params.id))
         .then(resp => resp.json())
         .then(json => res.json(json));
 });
