@@ -19,13 +19,13 @@ app.use('/api/league', (req, res) => {
 });
 
 app.use('/api/allmatches', (req, res) => {
-    fetch(LEAGUE_URL)
+    fetch(ALL_MATCHES_URL)
         .then(resp => resp.json())
         .then(json => res.json(json));
 });
 
 app.use('/api/match/:id', (req, res) => {
-    fetch(ALL_MATCHES_URL(req.params.id))
+    fetch(MATCH_URL(req.params.id))
         .then(resp => resp.json())
         .then(json => res.json(json));
 });
