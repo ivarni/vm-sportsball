@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { decode } from 'he';
 
-import { getLeague, getMatch } from './api';
+import { getLeague, getMatch, getGuess } from './api';
 
 import Results from './Results';
 import Spinner from './Spinner';
@@ -25,11 +25,12 @@ class App extends Component {
         try {
             const league = await getLeague();
 
-            const list = league.liste.map(p => ({
-                ...p,
-                tipping: JSON.parse(p.tipping)
-            }));
-
+            const player_ids = league.liste.map(p => p.id_public)
+            const playerGuesses = await Promise.all([...player_ids].map(
+                async (id) => getGuess(id) 
+            ))
+            
+            const playerGuessesDecoded = playerGuesses.map(p => ({...p, tipping: JSON.parse(p.tipping)}))
             const match_ids = new Set(
                 JSON.parse(league.liste[0].tipping).map(match => match.id)
             );
@@ -39,7 +40,7 @@ class App extends Component {
             ))
 
             this.setState({
-                list: list.map(l => ({
+                list: playerGuessesDecoded.map(l => ({
                     ...l,
                     tipping: l.tipping.map(tipping => {
                         const match = matches.find(m => m.id === tipping.id);
