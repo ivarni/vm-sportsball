@@ -19,7 +19,8 @@ const Match = ({ data }) => {
                 'tr',
                 { 'tr--red': wrong},
                 { 'tr--green': correct},
-                { 'tr--lightgreen': correctOutcome && !correct}
+                { 'tr--lightgreen': correctOutcome && !correct},
+                { 'tr--live': !finished},
             )}
         >
             <td className="td">

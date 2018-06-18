@@ -60,6 +60,11 @@ body {
     background-color: #dbf3cf;
 }
 
+.tr--live {
+    background-color: #ffa73d;
+    font-weight: bold;
+}
+
 .th, .td {
     padding: 10px 10px 10px 0;
     text-align: left;
