@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const Match = ({ data }) => {
+const Match = ({ app, data }) => {
     const {
         eventName,
         spilt,
@@ -12,6 +12,7 @@ const Match = ({ data }) => {
         correct,
         correctOutcome,
         wrong,
+        match
     } = data;
 
     return (
@@ -25,7 +26,14 @@ const Match = ({ data }) => {
             )}
         >
             <td className="td">
-                {eventName}
+                {eventName} 
+                <button
+                    className="button"
+                    onClick={() => app.setState({
+                        match_selected: match.id
+                    })}>
+                    tipping
+                </button>
             </td>
             <td className="td">
                 {spilt &&

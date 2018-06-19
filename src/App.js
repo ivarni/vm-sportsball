@@ -4,6 +4,7 @@ import { decode } from 'he';
 import { getLeague, getGuess, getAllMatches } from './api';
 
 import Results from './Results';
+import MatchSummary from './MatchSummary';
 import Spinner from './Spinner';
 
 import './App.css';
@@ -18,6 +19,7 @@ class App extends Component {
             id_selected: null,
             list: [],
             matches: [],
+            match_selected: null
         }
     }
 
@@ -98,6 +100,7 @@ class App extends Component {
             id_selected,
             list,
             matches,
+            match_selected
         } = this.state;
 
         if (hasError) {
@@ -117,7 +120,7 @@ class App extends Component {
                 <h1>
                     Scelto VM-liga
                 </h1>
-                <table>
+                <table id="liga">
                     <thead>
                         <tr>
                             <td>#</td>
@@ -144,12 +147,23 @@ class App extends Component {
                     ))}
                     </tbody>
                 </table>
-                {id_selected &&
-                    <Results
-                        tipping={list.find(p => p.id_public === id_selected)}
-                        matches={matches}
-                    />
-                }
+                <div id="playerInfo">
+                    {id_selected &&
+                        <Results
+                            app = {this}
+                            tipping={list.find(p => p.id_public === id_selected)}
+                            matches={matches}
+                        />
+                    }
+                </div>
+                <div id="matchSummary">
+                    {match_selected &&
+                        <MatchSummary
+                            match={matches.find(m => m.id === match_selected)}
+                            players={list}
+                        />
+                    }
+                </div>
             </div>
         );
     }
