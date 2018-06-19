@@ -6,7 +6,7 @@ const express = require('express');
 const LEAGUE_URL = 'https://www.vg.no/spesial/2018/fotball-vm/api/hent_liga.php?liga=56e56251c0ff2001546b6fb768101933';
 const MATCH_URL = (id) => `https://redutv-api.vg.no/sports/fotball-vm-2018/kamp/${id}`;
 const GUESS_URL = (id) => `https://www.vg.no/spesial/2018/fotball-vm/api/hent_tipping.php?id_public=${id}`;
-const ALL_MATCHES_URL = 'https://redutv-api.vg.no/sports/fotball-vm-2018/kampene'
+const ALL_MATCHES_URL = 'https://redutv-api.vg.no/sports/fotball-vm-2018/kampene';
 
 const app = express();
 
