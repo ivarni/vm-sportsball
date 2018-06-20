@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const Match = ({ data }) => {
+const Match = ({ app, data }) => {
     const {
         eventName,
         spilt,
@@ -12,6 +12,7 @@ const Match = ({ data }) => {
         correct,
         correctOutcome,
         wrong,
+        match
     } = data;
 
     return (
@@ -24,17 +25,24 @@ const Match = ({ data }) => {
                 { 'tr--live': !finished},
             )}
         >
-            <td className="td">
-                {eventName}
+            <td >
+                 
+                <button
+                    className="button2"
+                    onClick={() => app.setState({
+                        match_selected: match.id
+                    })}>
+                    {eventName}
+                </button>
             </td>
-            <td className="td">
+            <td >
                 {spilt &&
                     <span>
                         {guess}
                     </span>
                 }
             </td>
-            <td className="td">
+            <td >
                 {(finished || inProgress) &&
                     <span>
                         {result}

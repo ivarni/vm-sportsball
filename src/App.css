@@ -13,6 +13,16 @@ body {
     color: rgba(255, 255, 255, .9);
 }
 
+.flexit {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.box {
+    min-width: 20%;
+}
+
 @media screen and (min-width: 500px)  {
     .app {
         font-size: 18px;
@@ -29,6 +39,10 @@ body {
     margin-top: 10px;
 }
 
+.placement {
+    color: #C5D200;
+}
+
 .button {
     background: none;
     border: none;
@@ -41,27 +55,41 @@ body {
     text-decoration: underline;
 }
 
+
+.button2 {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: inherit;
+    font-size: inherit;
+}
+
 .table {
     border-spacing: 0;
     width: 100%;
     max-width: 600px;
     color: #000000;
+    line-height: 1.2em;
 }
 
 .tr--red {
-    background-color: #f3cfcf;
+    color: #ff6e6e;
+    font-weight: 300;
 }
 
 .tr--green {
-    background-color: #99ff66;
+    color: #86b96d;
+    font-weight: 600;
 }
 
 .tr--lightgreen {
-    background-color: #dbf3cf;
+    color: #bee6ab;
+    font-weight: 300;
 }
 
 .tr--live {
-    background-color: #ffa73d;
+    color: #C5D200;
     font-weight: bold;
 }
 

@@ -3,7 +3,7 @@ import { decode } from 'he';
 
 import Match from './Match';
 
-const Results = ({ tipping, matches }) => {
+const Results = ({ tipping, matches, app }) => {
     return (
         <Fragment>
             <h2>
@@ -32,6 +32,7 @@ const Results = ({ tipping, matches }) => {
                             );
                             return (
                                 <Match
+                                    app = {app}
                                     key={match.id}
                                     data={{
                                         ...match,
