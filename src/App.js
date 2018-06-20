@@ -116,53 +116,58 @@ class App extends Component {
         }
 
         return (
-            <div className="app">
+            <div className="app">                
                 <h1>
                     Scelto VM-liga
                 </h1>
-                <table id="liga">
-                    <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Navn</td>
-                            <td>Poeng</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {list.map(p => (
-                        <tr key={p.id_public} className="li">
-                            <td>{p.placement}.</td>
-                            <td>
-                            <button
-                                className="button"
-                                onClick={() => this.setState({
-                                    id_selected: p.id_public,
-                                })}
-                            >
-                                {decode(p.navn)}
-                            </button>
-                            </td>
-                            <td>{p.score} ({p.correct})</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-                <div id="playerInfo">
-                    {id_selected &&
-                        <Results
-                            app = {this}
-                            tipping={list.find(p => p.id_public === id_selected)}
-                            matches={matches}
-                        />
-                    }
-                </div>
-                <div id="matchSummary">
-                    {match_selected &&
-                        <MatchSummary
-                            match={matches.find(m => m.id === match_selected)}
-                            players={list}
-                        />
-                    }
+                <div className="flexit">
+                    <div className="box">
+                        <h2>Tabell</h2>    
+                        <table id="liga">
+                            <thead>
+                                <tr>
+                                    <td>#</td>
+                                    <td>Navn</td>
+                                    <td>Poeng</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {list.map(p => (
+                                <tr key={p.id_public} className="li">
+                                    <td>{p.placement}.</td>
+                                    <td>
+                                    <button
+                                        className="button"
+                                        onClick={() => this.setState({
+                                            id_selected: p.id_public,
+                                        })}
+                                    >
+                                        {decode(p.navn)}
+                                    </button>
+                                    </td>
+                                    <td>{p.score} ({p.correct})</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="playerInfo" className="box">
+                        {id_selected &&
+                            <Results
+                                app = {this}
+                                tipping={list.find(p => p.id_public === id_selected)}
+                                matches={matches}
+                            />
+                        }
+                    </div>
+                    <div id="matchSummary" className="box">
+                        {match_selected &&
+                            <MatchSummary
+                                match={matches.find(m => m.id === match_selected)}
+                                players={list}
+                            />
+                        }
+                    </div>
                 </div>
             </div>
         );
