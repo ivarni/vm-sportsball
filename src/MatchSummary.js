@@ -21,7 +21,7 @@ const MatchSummary = ({ match, players }) => {
                 </thead>
                 <tbody>
                     {
-                        players.sort((p1,p2) => p2.score - p1.score).map (p => {
+                        players.map (p => {
                             const matchGuess = p.tipping.find(t => t.id === match.id);
                             return (
                                 <tr key={p.id_public} className={classNames('tr',
@@ -29,7 +29,7 @@ const MatchSummary = ({ match, players }) => {
                                     { 'tr--green': matchGuess.correct},
                                     { 'tr--lightgreen': matchGuess.correctOutcome && !matchGuess.correct},
                                     { 'tr--live': !matchGuess.finished})}>
-                                    <td className="td">{decode(p.navn)}</td><td className="td">{matchGuess.h} - {matchGuess.b}</td></tr>)
+                                    <td >{decode(p.navn)}</td><td>{matchGuess.h} - {matchGuess.b}</td></tr>)
                         })
                         
                     }

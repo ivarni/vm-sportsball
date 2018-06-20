@@ -66,9 +66,19 @@ class App extends Component {
                     score:  l.tipping.filter(t => t.correctOutcome).map(t => t.correct ? 2 : 1).reduce((a,s) => a+s),
                     correct: l.tipping.filter(t => t.correct).length
                 })).sort(
-                    (a, b) => (a.score === b.score) ? 0 :
-                        (a.score < b.score) ? 1 : -1
-                ).map((p, idx, all) => ({
+                    (a, b) => {
+                        if(a.score === b.score && a.correct === b.correct) {
+                            console.log (`navn compare ${a.navn} ${a.score} ${a.correctOutcome}-${b.navn} ${b.score} ${b.correctOutcome} `)
+                            return b.navn.localeCompare(a.navn)
+                        } else if (a.score === b.score) {
+                            console.log (`score compare ${a.navn} ${a.score} ${a.correctOutcome}-${b.navn} ${b.score} ${b.correctOutcome} `)
+                            return b.correct - a.correct;
+                        } else {
+                            console.log (`score compare ${a.navn} ${a.score} ${a.correctOutcome}-${b.navn} ${b.score} ${b.correctOutcome} `)
+                            return b.score - a.score;
+                        }
+                    })
+                .map((p, idx, all) => ({
                     ...p,
                     placement: this.findPlacement(all, idx)
                 })),
@@ -123,18 +133,18 @@ class App extends Component {
                 <div className="flexit">
                     <div className="box">
                         <h2>Tabell</h2>    
-                        <table id="liga">
+                        <table id="liga" className="table">
                             <thead>
-                                <tr>
-                                    <td>#</td>
-                                    <td>Navn</td>
-                                    <td>Poeng</td>
+                                <tr className="tr">
+                                    <th className="th">#</th>
+                                    <th className="th">Navn</th>
+                                    <th className="th">Poeng</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {list.map(p => (
-                                <tr key={p.id_public} className="li">
-                                    <td>{p.placement}.</td>
+                                <tr key={p.id_public} className="tr">
+                                    <td className="placement">{p.placement}.</td>
                                     <td>
                                     <button
                                         className="button"
@@ -145,7 +155,7 @@ class App extends Component {
                                         {decode(p.navn)}
                                     </button>
                                     </td>
-                                    <td>{p.score} ({p.correct})</td>
+                                    <td className="placement">{p.score} ({p.correct})</td>
                                 </tr>
                             ))}
                             </tbody>
